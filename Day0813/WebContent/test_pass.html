@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+ <form action="result.jsp" method="post">
+ 	ID: <input name ="id" type ="text" placeholer ="input your id"><br>
+ 	PWD: <input name ="pwd" type ="password"><br>	
+ 	Your name is: <input name="name" type ="text" size="5" maxlength="3"><br>	
+ 	age: <input name ="age" type="number" min="20" max="100"><br>
+ 	Your job is:<select name ="job"> <!-- size 1= combo-->
+ 					<option value ="Student">Student</option>
+ 					<option value="Staff">Staff</option>
+ 					<option value="Business">Business</option>
+ 				</select><br>
+ 	Region:	<select name ="area" size="6"> <!-- size > 1= list-->
+ 				<option value="수도권">수도권</option>
+ 				<option value="경상도">경상도</option>
+ 				<option value="전라도">전라도</option>
+ 				<option value="충청도">충청도</option>
+ 				<option value="강원도">강원도</option>
+ 				<option value="제주도">제주도</option>
+ 			</select><br>	
+ 	M/F: <input name ="gender" value ="M" type ="radio">M
+ 	<input name ="gender" value ="F" type ="radio">F<br>
+ 	Bloodtype: 
+ 	<input name ="bt" value ="A" type ="radio">A
+ 	<input name ="bt" value ="B" type ="radio">B
+ 	<input name ="bt" value ="AB" type ="radio">AB
+ 	<input name ="bt" value ="O" type ="radio">O <br>
+ 	Hobbies:
+ 	<input name = "hb" value ="Swim" type="checkbox">Swim
+ 	<input name = "hb" value ="Movie" type="checkbox">Movie
+ 	<input name = "hb" value ="Boxing" type="checkbox">Boxing
+ 	<input name = "hb" value ="Running" type="checkbox">Running
+ 	<input name = "hb" value ="Reading" type="checkbox">Reading
+ 	<br> 
+ 	Techniques: 
+ 	<input name = "skill"  value ="Java" type="checkbox"> Java 
+ 	<input name = "skill"  value ="Oracle" type="checkbox"> Oracle
+ 	<input name = "skill"  value ="SQL" type="checkbox"> SQL
+ 	<input name = "skill"  value ="HTML" type="checkbox"> HTML
+ 	<input name = "skill"  value ="CSS" type="checkbox"> CSS
+ 	<input name = "skill"  value ="JS" type="checkbox"> JS
+ 	<br>
+ 	About You: <br> 
+ 	<textarea name="info" rows="10" cols="80"></textarea><br>
+ 	Photo Upload: <input type="file">
+ 	<br> 
+ 	<input name="gender" type="submit" value ="확인">
+ </form>
+</body>
+</html>

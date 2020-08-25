@@ -1,0 +1,29 @@
+0821
+
+**기존의 게시판에 파일을 업로드 할 수 있는 형태로 수정해보자 
+
+**파일명 저장하기 위한 컬럼 추가 
+alter table board add fname varchar2(50);
+
+**관련되는 파일 수정 파일 업로드 가능한 게시판으로 수정
+1. 암호를 위한 칼럼을 추가해보자 
+
+2. 글 수정, 삭제 시에는 암호를 입력 받아서 암호가 일치할 때에만 삭제하도록 하고싶다! 
+
+alter table board add pwd varchar2(30);
+
+모든 게시물이 반드시 사진이 있을 필요는 없다. 
+사진이 있을 수도 있고 없을 수 도 있다. 
+이때 추가, 수정, 삭제 오류없이 동작하도록 코드를 수정하자. 
+
+create table member(
+	id varchar2(30) primary key,
+	pwd varchar2(30),
+	name varchar2(30));
+
+insert into member values('tiger', 'tiger', '고길동');
+insert into member values('lion', 'lion', '박또치');
+아이디와 암호를 매개변수로 전달받아 올바른 회원인지 판별하는 메소드를 정의 
+(올바른 회원이면 true 그렇지 않으면 false) 
+
+boolean

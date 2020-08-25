@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+
+<body>
+<form action ="result2.jsp" method ="post">
+<h2>글작성하기</h2><br>
+작성자  <input name ="user" type="text"><br>
+아이디 <input name ="id" type="text"><br>
+이메일 <input name ="email" type="text">@<input name="domain" type="text"><br>
+휴대폰&nbsp;<select name ="phone1">
+	<option value ="010">010</option>
+	<option value ="011">011</option>
+	<option value ="016">016</option>
+	<option value ="018">018</option>
+	<option value ="019">019</option>
+</select> - <input name ="phone2" type="number"> - <input name ="phone3" type="number"><br>
+글제목 <input name="title" type="text"><br>
+
+내용&nbsp;&nbsp;&nbsp;&nbsp;<textarea name = "info" rows="10" cols ="80"></textarea><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value ="제출">
+
+</form>
+</body>
+</html>

@@ -1,0 +1,83 @@
+0820
+
+create table board(
+	no number primary key, 
+	title varchar2(100),
+	writer varchar2(20),
+	regdate date,
+	content varchar2(3000),
+	hit number,
+	ip varchar2(50)		
+);
+
+게시물 번호는 시퀀스를 이용하여 1부터 1씩 자동으로 증가하게 하자
+
+create sequence seq_board; 
+
+-boardVO
+
+-boardDAO
+insertboard(BoardVO);
+ArrayList<BoardVO> listAll();
+getBoard(int no)
+
+사원관리시스템 구현 
+(사원등록, 목록, 상세보기, 수정, 삭제)
+
+
+
+0821
+
+<<jsp 내장객체>>
+따로 사용자가 객체를 생성하지 않고 바로 사용할 수 있는 객체들 
+request: 사용자의 요청 정보를 갖고있는 객체
+				setCharacterEncoding() 
+				getParameter()
+				getParameterValues()
+				getParameterNames()
+				getRemoteAddr()
+				getRequestURL()
+				getReqeuestURI()
+				getRealPath(): 웹어플리캐이션을 기준으로 생성된 폴더의 실제경로를 알아온다.
+					이미지파일 업로드를 할때는 반드시 웹어플 기준으로 폴더를 만들고
+					그 폴더의 실제경로를 알아야 한다. 
+
+
+response: 
+out:
+session:
+application
+exception
+
+
+
+****create table goods(
+	no number primary key,
+	name varchar2(50),	
+	price number,
+	qty number,
+	fname varchar2(50)
+);
+<<서버에 파일 업로드 하기>>
+크롬에서
+ http://www.servlets.com/cos/
+여기가서
+download cos.jar
+압축을 풀고 생성된 cos.jar를 
+webcontent/webinf  복사
+<form태그에 다음의 속성을 추가>
+entype="multipart/form-data"
+form 태그의 전송방식은 반드시 post!! 
+
+유저가 업로드한 사진을 저장하기 위한 폴더를 만든다. 
+c:/upload
+
+
+=> 사진을 업로드 할 폴더를 위와 같이 C드라이브 밑에 직접 경로를 생성하게 되면 
+유저 들은 사진을 볼 수 없다. 
+=> 업로드한 사진을 다시 클라이언트 들에게 서비스 하려면 (보여주도록 하려면)
+   c 드라이버 폴더를 만들지 않고
+   현재 프로젝트 기준으로 폴더를 만들어야 한다. 
+
+
+
