@@ -1,0 +1,218 @@
+0826
+전통적인 jsp 는 사용자가 어떤서비스를 원하는지 서비스의 요청파악과 
+그 요청에 대한 처리를 위한 자바문법과 
+처리된 결과를 보여주기 위한 html이 혼용되어 있다.
+
+이것이 웹 초기에는 장점 이었으나
+현대에는 여러사람이 협업을 하거나 유지보수하기에는 어려움이 있다. 
+그러면, 어떻게 하면 협업이 용이하고 유지보수가 용이할까? 
+
+==> jsp  안에 모든것을 넣지 말고 
+jsp 안에서 저버문법을 걷어내면 좋겠다. 
+==> mvc 패턴을 사용하자!
+	M: model
+	사용자 요청에 따라 일처리를 위한 모든 자바클래스들 혹은 처리된 데이터
+	V: view
+	사용자 화면에 보여주기 역할을 담당하는 것(jsp)
+	반복문과 선택문은 어떻게 처리하는지? 
+		==> 그것을 대신하는 태그를 사용한다. 
+			jstl
+
+	변수 출력은 어떻게 처리하는지? 
+		==> <%=변수명%>  표현식 대신 
+		==> ${변수명} 	  표현언어
+		
+	C: controller
+	사용자의 서비스 요청을  Controller 가 담당하게 하자. 
+	서블릿으로 만들 수 있고 jsp로 만들 수도 있다. 
+
+========================================================
+상품등록
+insertGoods.do	 InsertGoods	doGet			insertGoods.jsp
+insertGoods.do	 insertGoods 	doPost			
+				GoodsDao.insertGoods	insertGoodsOK.jsp
+상품목록 
+listGoods.do 	ListGoods	doGet
+				GoodsDao.listGoods 	listGoods.jsp 
+
+상품상세
+detailGoods.do 	DetailGoods	doGet
+				GoodsDao.getGoods	detailGoods.jsp
+상품수정에 대한 기능을 추가 
+updateGoos.do 
+
+insert into goods values(1,'축구공',20000,20,'ball1.jpg');
+insert into goods values(2,'유니폼',50000,30,'cloth1.jpg');
+insert into goods values(3,'양말',20000,20,'stock1.jpg');
+
+질문)
+request.getParameter() 와
+request.getAttribute()가 뭐가다른지?
+
+<form action ="result.jsp" method="post">
+	<input type="text" name="name">
+	<input type="submit" value="확인">
+</form>
+위와같이 form 태그에 입력한 값을 받아 오기 위해서는
+request.getParameter("name")을 사용한다. 
+
+또, 
+<a href="result.jsp?no=100&name=tiger">연결</a>
+위와 같이 a태그로 연결되는 문서에게 전달 해 주는 문자열을 
+Query String 이라고 한다. 
+Query String으로 전달되는 값을 받을 때에도 
+request.getParameter("no") 를 사용한다. 
+
+즉, 클라이언트가 요청한 데이터(변수)를 받기위한 용도로 
+request.getParameter() 를 사용한다. 
+
+request 는 사용자의 요청정보를 파악하기 위핸 용도로 사용하기도 하지만
+상태유지를 위해서도 사용한다. 
+즉, controller 에서 처리된 결과를 view 페이지 에서 
+사용하도록 상태유지를 위해서도 이용한다. 
+그 때에는 request.setAttribute("변수명", "값")을 통해서
+상태유지를 시킨다. 
+이렇게 setAttribute을 통해 상태유지한 값을 읽어오기 위해서는 
+getAttribute을 이용한다. 
+
+MVC 패턴 
+M: Model
+V:  View
+C: Controller
+
+<<Front Controller>>
+웹어플리케이션 문지기와 같이 정문앞에 서서 사용자의 모든 요청을 파악하는 컨드롤러를 
+Controller를 말한다. 
+이전의 실습과 같이 모든 요청에 따른 controller를 
+각각 만들지 않고 대표하는 Controller 하나만 만들어서 처리하는 방식 
+listGoods.do ListGoods
+insertGoods.do InsertGoods
+..
+위와 같이 각각의 요청에따른 별도의 controller에 따르지 않고
+어떤 요청에 따르더라도 하나의 컨트롤러가 동작하는 방식 
+
+사용자의 모든 요청을 받아들이기 위한 BitController를 만든다
+사용자의 요청은 get방식 일 수도 있고 post 방식일 수도 있다. 
+그것을 동일하게 처리하도록 proRequest 메소드를 만들고
+doGet에서도 doPost 에서도 proRequest를 호출하도록 한다. 
+
+그리고 사용자의 어떠한 요청이라도 BitController 가 동작하도록 
+하려면 web.xml 에 다음과 같이 설정한다. 
+
+ <servlet>
+    <servlet-name>bit</servlet-name>
+    <servlet-class>com.bit.controller.BitController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bit</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+
+혹은 서블릿에 다음과 같이 설정 할 수도 있다. 
+@WebServlet("/*.do")	
+
+이때 둘중에 한곳에만 설정이 되어야한다. 
+
+이제 브라우저에서 listGoods.do 혹은 detailGoods.do 라고 요청하면
+bitController 가 동작한다. 
+즉 사용자가 어떤 *.do 패턴이라도 
+frontcontroller인 BitController 가 동작한다. 
+
+그러면, 진짜로 사용자가 무것을 원하는지를 파악해야 한다. 
+사용자가 요청할 uri로부터 서비스명을 뽑아온다. 
+http://192.168.0.49:8088/Day0826_d/listGoods.do
+ 만약 브라우져를 열어서 주소표시줄에 위와같이 입력했을 떄에 
+전체 url 중에서 프로젝트 이름부터 반환하는 메소드는  
+request.getRequestURI();를 호출하면
+전체 url로부터 다음과 같이 얻어올 수 있다. 
+/day0826_d/listGoods.do
+
+그 uri로부터 서비스명만 뽑아오려면 String클래스의 메소드를 다음과 같이 이용하면 된다. 
+uri.subString( uri.lastIndexOf("/") + 1);
+위에 메소드를 호출하면 listGoods.do 와 같이 서비스 명을 뽑아올 수 있다. 
+그것을 cmd 변수에 담는다. 
+이제  cmd에 따라서 
+	각각의 일처리가 필요하다. 
+	만약 모든 일처리가 frontcontroller 내에서 이뤄진다면 
+	Frontcontroller는 매우 비대해지고 가독성, 유지보수가 어려워질것이다. 
+	그래서 각각의 요청(cmd)에 따른 일처리 담당자(Service)객체에게 일을 맡긴다. 
+
+
+그런데 이러한 일처리 담당자에게 일을 맡기기 위해서는 
+메소드를 호출해야 하는데 
+그 메소드들이 일처리 담당자마다 제각각 다르다면 
+관리하기가 용이하지 않다. 
+==> 인터페이스를 만들어서 일반화 시킨다. 모든 일처리 담당자(Service) 가 
+수행하는 메소드를 통일시킨다.
+
+	
+
+만약 cmd가 listGoods.do 라면
+listGoodsService클래스의 일처리를 위한 메소드를 호출
+그렇지 않고 만약 cmd가 detailGoods.do 라면 
+DetailGoodsService 클래스의 일처리를 위한 메소드를 호출/ 
+
+
+모든 일처리 담당자가 가져야할 메소드를 일반화 시키기 위해서
+BitService 라는 인터페이스를 만들고 다음과 같이 메소드 선언.
+public String interface bitService {
+	public String service(request, response);
+}
+앞으로 만들어지는 일처리 담당자인 Service들은 반드시 
+bitService의 후손이 되도록 하고 
+각각의 일처리를 위해서는 Service를 오버라이딩 하도록 강제할 수 있다. 
+
+또, 각각의 일처리를 위한 서비스 객체들은 맡은 바 일처리를 수행한 후 
+어디로 가야할 지 viewpage 이름을 String 으로 반환하도록 한다. 
+
+예를들어 listGoodsService 객체는 다음과 같이 정의할 수 있다. 
+class ListGoodsService implements BitService {
+	public String service(request, response) {
+	 GoodsDao dao = new GoodsDao();
+	request.setAttribute("list", dao.listAll());
+	return "listGoods.jsp";
+  }
+}
+
+그러면 FrontController의 get 방식으로 요청하던 post 방식으로 요청하던
+동일한 처리를 위해서 호출되는 proRequest 에서는 
+사용자의 요청에 따라 해당 Service객체에게 다음과 같이 일을 맡길 수 있다. 
+
+BitService bs = null;
+if(cmd.equals("listGoods.do")) {
+	bs = new ListgoodsServise();
+} else if (cmd.equals("detailGoods.do")) {
+	bs = new DetailGoodsService();
+}
+
+String view = bs.sevice();
+
+그런데 서비스 수가 많아지면 일일이 if 문을 수도없이 작성해야 하는 번거로움이 있다. 
+이것을 해결하기 위해서 
+map을 이용할 수 있다. 
+
+서블릿의 멤버변수로 
+frontcontroller인 서븝ㄹ릿이ㅡ
+멤버벼눗로 Map은 다음과 같이 선언한다
+
+HashMap<String, BitService> map;
+map의 키에는 서비스명을 저장하기 위해서  String 으로 하고
+map의 value 에는 BitService 의 후손들을 담기위하여 BitService로 지정
+이때 map을 생성하고 
+사용자가 요청할 서비스 명과
+그에 따른 일처리 담당자인 서비스 객체를 생성하여 담는 동작은 
+서블릿이 맨 처음 요청될때 한번만 동작하면 된다. 
+
+그렇게 하기 위해서는 다음과 같이 init 메소드를 오버라이딩 하여 다음의 내용을 추가한다. 
+public void init(ServleteConfig config) {
+	map = new HashMap<String, BitService>();
+	map.put("llistGoods.do", new ListGoodsService());
+	map.put("llistGoods.do", new DetailGoodsService());
+}
+그러면 이제 
+proRequest 에서는 서비스 수 만큼 일일이 표현하지 않아도 된다. 
+다음과 같이 map으로 부터 일처리 담당자 객체를 
+코드 한줄로 뽑아올 수 있다. 
+
+BitService bit = map.get(cmd);
+ 

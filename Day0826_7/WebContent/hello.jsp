@@ -9,6 +9,7 @@
 <body>
 <%
 	int cnt = 0;
+	cnt++;	
 	Cookie []coockies = request.getCookies();
 	if(coockies != null) {
 		for(Cookie c:coockies) {
@@ -20,13 +21,12 @@
 	
 	//나머지 코드 완성 
 
-	cnt++;		
+		
 	out.print("<h2>" + cnt +"번째 방문입니다.</h2>"); 	
 	Cookie cookie = new Cookie("cnt", cnt+"");
 	cookie.setMaxAge(60*60*24);
 	response.addCookie(cookie);
 %>	
-
 
 </body>
 </html>
