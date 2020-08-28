@@ -1,4 +1,4 @@
-package com.bit.bitService;
+package com.bit.service;
 
 import java.io.IOException;
 
@@ -8,5 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface BitService {
 	public String service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+	
 	
 }
