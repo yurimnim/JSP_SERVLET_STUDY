@@ -5,36 +5,32 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class ConnectionProvider {	
-	public static void close(Connection conn, Statement stmt, ResultSet rs) {
-		try {
-			if(rs != null) {				
-				rs.close();
-			}
-			if(stmt != null) {
-				stmt.close();
-			}
-			if(conn != null) {
-				conn.close();
-			}
-			
-		} catch (Exception e) {
-			System.out.println("close 예외발생" + e.getMessage());
-		}
-	}
+public class ConnectionProvider {
 	
-	public static Connection getConnection() {
-		Connection conn= null;
-		try {
-			String driver="oracle.jdbc.driver.OracleDriver";
-			String url="jdbc:oracle:thin:@192.168.0.49:1521:XE";
-			String pwd="madang";
-			String user="c##madang";
-			Class.forName(driver);
-			conn = DriverManager.getConnection(url,user,pwd);
-		} catch (Exception e) {
-			System.out.println("connprov예외발생" +e.getMessage());			
+  public static void close(ResultSet rs, Statement stmt, Connection conn ) {
+	  try {
+		if(rs != null) {
+			rs.close();
 		}
-		return conn;		
+		if(stmt != null) {
+			stmt.close();		
+		}
+		if(conn != null) {
+			conn.close();
+		}
+	} catch (Exception e) {
+		System.out.println("close exception occured " + e.getMessage());
 	}
+  }
+  
+  public static Connection getConnection() {
+	  Connection conn = null;
+	  try {
+		Class.forName("oracle.jdbc.OracleDriver");
+		conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","oracle");
+	} catch (Exception e) {
+		System.out.println("Connection exception occured " +e.getMessage());
+	}
+	  return conn;
+  }
 }
