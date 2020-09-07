@@ -25,15 +25,29 @@ public class EmpDao {
 		return dao;
 	}
 	
-	 public ArrayList<EmpVo> listAll(int pageNUM){
+	 public ArrayList<EmpVo> listAll(int pageNUM, String search, String option, String op, String sort){
 	
 		 int end = pageNUM* ListEmpAction.pageSize;
 		 int start = end - (ListEmpAction.pageSize-1);
 		 
 		 ArrayList<EmpVo> list = new ArrayList<EmpVo>();
 		 String sql = "select empno,ename,job,mgr,hiredate,sal,comm,deptno from "
-		 		+ "(select rownum n, empno,ename,job,mgr,hiredate,sal,comm,deptno from (select * from emp order by empno)) " + 
-					"where n between ? and ?";
+		 		+ "(select rownum n, empno,ename,job,mgr, to_char(hiredate,'yyyy-mm-dd')hiredate, sal,comm,deptno from (select * from emp";
+		 
+		 if(!search.equals("")) {
+			 if(option.equals("sal")) {
+				 sql += " where sal " + op + search; 
+			 } else {
+				 sql += " where "+ option + " like '%" + search +"%'";
+			 }
+		 }
+		 
+		 if(!sort.equals("")) {
+			 sql += " order by " + sort +" desc)) " + "where n between ? and ?";
+		 }else {
+			 sql += ")) " + "where n between ? and ?";
+		 }
+			 
 		 try {
 			 Connection conn = ConnectionProvider.getConnection();
 			 PreparedStatement pstmt  = conn.prepareStatement(sql);
@@ -52,9 +66,19 @@ public class EmpDao {
 		 return list;
 	 }
 	 
-	 public int countTotal() {
+	 
+	 public int countTotal(String search, String option, String op) {
 		 int n = 0;
 		 String sql = "select count(*) from emp";
+		 
+		 if(!search.equals("")) {
+			 if(option.equals("sal")) {
+				 sql += " where sal " + op + search; 
+			 } else {
+				 sql += " where " + option + " like '%" + search +"%' ";
+			 }
+		 }
+
 		 try {
 			 Connection conn = ConnectionProvider.getConnection();
 			 Statement stmt  = conn.createStatement();
@@ -69,5 +93,27 @@ public class EmpDao {
 		 return n;
 		 
 	 }
-	
+	 
+	 public int insertEmp(EmpVo e) {
+		 int re = -1;
+		 try {
+			String sql="insert into emp values(?,?,?,?,to_date(?,'yyyy-mm-dd'),?,?,?)";
+			Connection conn = ConnectionProvider.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, e.getEmpno());
+			pstmt.setString(2, e.getEname());
+			pstmt.setString(3, e.getJob());
+			pstmt.setInt(4, e.getMgr());
+			pstmt.setString(5, e.getHiredate());
+			pstmt.setInt(6, e.getSal());
+			pstmt.setInt(7, e.getComm());
+			pstmt.setInt(8, e.getDeptno());
+			
+			re = pstmt.executeUpdate();			
+			ConnectionProvider.close(null, pstmt, conn); 
+		} catch (Exception e2) {
+			System.out.println("insertEmp 예외발생 " + e2.getMessage());
+		}	 
+		 return re;
+	 }
 }
