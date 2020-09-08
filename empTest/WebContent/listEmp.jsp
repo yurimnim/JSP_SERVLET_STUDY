@@ -11,7 +11,7 @@
 	
 	a {
 		text-decoration: none;
-	  	color: black;
+	  	color: green;
 	}
 	
 	#op {
@@ -43,7 +43,7 @@
 <select name="option" onchange="pro(this.value)">
 	<option value="empno"> 직원번호 </option>
 	<option value="ename"> 직원명 </option>
-	<option value="job"> 직책 </option>
+	<option value="job"> 직함 </option>
 	<option value="mgr"> 관리자번호 </option>
 	<option value="deptno"> 부서번호 </option>	
 	<option value="sal"> 급여 </option>	

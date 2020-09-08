@@ -24,7 +24,7 @@ public class InsertEmpOkAction implements EmpAction {
 		e.setEname(request.getParameter("ename"));
 		e.setJob(request.getParameter("job"));
 		e.setHiredate(request.getParameter("hiredate"));
-
+		
 		int re = dao.insertEmp(e);
 		request.setAttribute("re", re);
 		

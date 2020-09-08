@@ -4,18 +4,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+	body {
+	 	font-family: 'Noto Sans KR';
+	}
+	
+	a {
+		text-decoration: none;
+	  	color: green;
+	}
+</style>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>직원등록페이지 </title>
 </head>
 <body>
 <c:if test="${re>=1 }">
-		직원등록완료!
+		직원등록완료! <br>
 	</c:if>
-
 	<c:if test="${re<1 }">
-		<font color="red"><b>직원등록오류</b></font>
+		<font color="red"><b>직원등록오류</b></font><br>
 	</c:if>
-<a href ="listEmp.do">직원목록</a><br>
+<a href ="listEmp.do">직원목록 &nbsp;&nbsp;</a>
 <a href ="insertEmp.do">직원등록</a>
 </body>
 </html>

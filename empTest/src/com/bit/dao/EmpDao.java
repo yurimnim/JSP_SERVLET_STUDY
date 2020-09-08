@@ -4,12 +4,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.bit.action.ListEmpAction;
 import com.bit.db.ConnectionProvider;
+import com.bit.vo.DeptVo;
 import com.bit.vo.EmpVo;
-
-import oracle.net.aso.r;
-
 public class EmpDao {
 	
 	private static EmpDao dao;
@@ -92,6 +93,58 @@ public class EmpDao {
 		}
 		 return n;
 		 
+	 }
+	 
+	 public ArrayList<DeptVo> listDept() {
+		 ArrayList<DeptVo> list = new ArrayList<DeptVo>();
+		 try {
+			 Connection conn = ConnectionProvider.getConnection();
+			 String sql = "select deptno, dname, loc from dept";
+			 Statement stmt  = conn.createStatement();
+			 ResultSet rs = stmt.executeQuery(sql);
+			 while(rs.next()) {
+				 list.add(new DeptVo(rs.getInt(1), rs.getString(2), rs.getString(3)));
+			 }
+		} catch (Exception e) {
+			System.out.println("listDept 예외발생 " + e.getMessage());
+		}
+		 return list;
+	 }
+	 
+	 //새직원 남바추천 
+	 public int getNewEmpno() {
+		 int re = -1;
+		 try {
+			 Connection conn = ConnectionProvider.getConnection();
+			 String sql = "select nvl(max(empno),999)+1 from emp";
+			 Statement stmt  = conn.createStatement();
+			 ResultSet rs = stmt.executeQuery(sql);
+			 while(rs.next()) {
+				 re = rs.getInt(1);
+			 }
+		} catch (Exception e) {
+			System.out.println("getNewEmpno 예외발생 " + e.getMessage());
+		}
+		 return re;
+	 }
+	 
+	 public ArrayList<Map> listEmp() {
+		 ArrayList<Map> list = new ArrayList<Map>();
+		 try {
+			 Connection conn = ConnectionProvider.getConnection();
+			 String sql = "select empno, ename from emp";
+			 Statement stmt  = conn.createStatement();
+			 ResultSet rs = stmt.executeQuery(sql);
+			 while(rs.next()) {
+				 HashMap map = new HashMap();
+				 map.put("empno", rs.getInt(1));
+				 map.put("ename", rs.getString(2));
+				 list.add(map);
+			 }
+		} catch (Exception e) {
+			System.out.println("listEmp 예외발생 " + e.getMessage());
+		}
+		 return list;
 	 }
 	 
 	 public int insertEmp(EmpVo e) {
