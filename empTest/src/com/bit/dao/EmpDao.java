@@ -169,4 +169,35 @@ public class EmpDao {
 		}	 
 		 return re;
 	 }
+	 
+	 public void createEmpTable() {
+		 String sql = "create table emp(empno number(10) primary key, ename varchar(100), " + 
+		 		"job varchar(100)," + 
+		 		"mgr number(4)," + 
+		 		"hiredate date," + 
+		 		"sal NUMBER," + 
+		 		"comm number," + 
+		 		"deptno number references dept(deptno))" ; 
+		 try {
+			 Connection conn = ConnectionProvider.getConnection();
+			 Statement stmt  = conn.createStatement();
+			 stmt.execute(sql);
+			 ConnectionProvider.close(null, stmt, conn); 
+		} catch (Exception e) {
+			System.out.println("createTable 예외발생 " + e.getMessage());
+		}
+
+	 }
+	 
+	 public void deleteEmpTable() {
+		 String sql = "drop table emp";
+		 try {
+			 Connection conn = ConnectionProvider.getConnection();
+			 Statement stmt  = conn.createStatement();
+			 stmt.execute(sql);
+			 ConnectionProvider.close(null, stmt, conn); 
+		} catch (Exception e) {
+			System.out.println("createTable 예외발생 " + e.getMessage());
+		}
+	 }
 }
